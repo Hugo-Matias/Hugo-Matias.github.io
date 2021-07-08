@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Etch-a-Sketch</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Etch-a-Sketch</h1>
-    <br>
-    <div class="pencil-options"></div>
-    <div class="container"></div>
-    <div class="canvas-options">
-        <button class="clear">Limpar</button>
-        <p>Resolução:</p>
-        <input type="range" name="slider" min="1" max="6"  value="3" id="canvas-size">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spritoshop</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Spritoshop</h1>
+    <br />
+    <div class="pencil-options">
+        <input type="radio" name="pencil" value="black" checked>
+        <label for="black">Preto</label>
+        <input type="radio" name="pencil" value="rainbow">
+        <label for="rainbow">Rainbow</label>
+        <input type="radio" name="pencil" value="burn">
+        <label for="burn">Queimar</label>
+        <input type="radio" name="pencil" value="dodge">
+        <label for="dodge">Clarear</label>
     </div>
+    <div class="container"></div>
+    <div class="canvas">
+      <button class="clear">Limpar</button>
+      <div class="canvas-options">
+        <p>Resolução:</p>
+        <input
+          type="range"
+          name="slider"
+          min="1"
+          max="6"
+          value="3"
+          id="canvas-size"
+        />
+      </div>
+    </div>
+    <p>Exercício executado no âmbito de <a href="https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/etch-a-sketch-project">The Odin Project.</a></p>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
