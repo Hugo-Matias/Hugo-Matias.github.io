@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.block {
+    position: relative;
+    background-color:white;
+    transition: all 0.3s ease-out;
+}
+
+.hovered {
+    background-color: #222;
+}
