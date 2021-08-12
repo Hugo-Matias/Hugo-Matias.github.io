@@ -46,19 +46,20 @@ const gameManager = (() => {
     if (!board[position]) {
       gameboard.play(position, activePlayer.getMarker());
       render();
-      board = gameboard.getBoard();
-      const scores = evaluateBoard(board);
-      if (scores.indexOf(9) != -1) {
+      board = [...gameboard.getBoard()];
+      const score = evaluateBoard(board);
+      if (score == 10) {
         gameOverScreen(p1);
-      } else if (scores.indexOf(-9) != -1) {
+      } else if (score == -10) {
         gameOverScreen(p2);
       } else {
         if (isGameOver(board)) {
           gameOverScreen();
         } else {
-          togglePlayer();
-          if (activePlayer == p2) {
-            play(getMove(board));
+          if (activePlayer == p1) {
+            aiPlay(getMove(board));
+          } else {
+            togglePlayer();
           }
         }
       }
@@ -77,6 +78,8 @@ const gameManager = (() => {
   };
 
   // Board
+  let gmBoard = [];
+
   const render = () => {
     const board = gameboard.getBoard();
     blocks.forEach((block) => {
@@ -101,23 +104,21 @@ const gameManager = (() => {
       let score = 0;
       comb.forEach((index) => {
         if (board[index] == p1.getMarker()) {
-          score += 3;
+          score += 1;
         } else if (board[index] == p2.getMarker()) {
-          score -= 3;
+          score -= 1;
         }
       });
       scores.push(score);
     });
-    return scores;
+    if (scores.indexOf(3) != -1) return 10;
+    else if (scores.indexOf(-3) != -1) return -10;
+    else return 0;
   };
 
   const isGameOver = (board) => {
-    const scores = evaluateBoard(board);
-    if (
-      board.indexOf(null) == -1 ||
-      scores.indexOf(9) != -1 ||
-      scores.indexOf(-9) != -1
-    ) {
+    const score = evaluateBoard(board);
+    if (board.indexOf(null) == -1 || score != 0) {
       return true;
     }
     return false;
@@ -132,7 +133,14 @@ const gameManager = (() => {
   // AI
   const minimax = (board, depth, isMax) => {
     if (isGameOver(board)) {
-      return evaluateBoard(board).reduce((total, value) => total + value, 0);
+      let boardScore = evaluateBoard(board);
+      // console.log(board);
+      // console.log(boardScore);
+      // console.log(depth);
+      // console.log(isMax);
+      if (isMax) boardScore -= depth;
+      else boardScore += depth;
+      return boardScore;
     }
 
     if (isMax) {
@@ -160,20 +168,29 @@ const gameManager = (() => {
   };
 
   const getMove = (board) => {
-    let bestScore = -9999;
-    let bestMove;
+    let bestScore = 9999;
+    let bestMoves = [];
     for (let i = 0; i < 9; i++) {
       if (board[i] == null) {
-        board[i] = p1.getMarker();
-        let moveScore = minimax(board, 0, false);
+        board[i] = p2.getMarker();
+        let moveScore = minimax(board, 0, true);
         board[i] = null;
-        if (moveScore > bestScore) {
-          bestMove = i;
+
+        if (moveScore < bestScore) {
+          bestMoves = [i];
           bestScore = moveScore;
+        } else if (moveScore == bestScore) {
+          bestMoves.push(i);
         }
       }
     }
-    return bestMove;
+    return bestMoves;
+  };
+
+  const aiPlay = (moves) => {
+    togglePlayer();
+    const moveIndex = Math.floor(Math.random() * moves.length);
+    play(moves[moveIndex]);
   };
 
   // Events
